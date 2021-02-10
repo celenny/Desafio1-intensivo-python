@@ -10,63 +10,27 @@ Original file is located at
 from google.colab import drive
 drive.mount('/content/drive')
 
-"""# Desafio:
-
-Você faz parte da equipe de Analytics de uma grande marca de vestuário com mais de 25 lojas espalhadas em Shoppings de todo o Brasil.
-
-Toda semana você precisa enviar para a diretoria um ranking atualizado com as 25 lojas contendo 3 informações:
-- Faturamento de cada Loja
-- Quantidade de Produtos Vendidos de cada Loja
-- Ticket Médio dos Produto de cada Loja
-
-Além disso, cada loja tem 1 gerente que precisa receber o resumo das informações da loja dele. Por isso, cada gerente deve receber no e-mail:
-- Faturamento da sua loja
-- Quantidade de Produtos Vendidos da sua loja
-- Ticket Médio dos Produto da sua Loja
-
-Esse relatório é sempre enviado como um resumo de todos os dados disponíveis no ano.
-
-# Solução do Desafio:
-
-Para resolver o desafio vamos seguir a seguinte lógica:
-
-- Passo 1 - Importar a base de Dados
-- Passo 2 - Visualizar a Base de Dados para ver se precisamos fazer algum tratamento
-- Passo 3 - Calcular os indicadores de todas as lojas:
-  - Faturamento por Loja
-  - Quantidade de Produtos Vendidos por Loja
-  - Ticket Médio dos Produto por Loja
-- Passo 4 - Calcular os indicadores de cada loja
-- Passo 5 - Enviar e-mail para cada loja
-- Passo 6 - Enviar e-mail para a diretoria
-
-Passo 1: Importar base de  dados
-"""
-
+# Passo 1: Importar base de  dados
 import pandas as pd
 
 tabela_vendas = pd.read_excel("/content/drive/MyDrive/Colab Notebooks/Vendas.xlsx")
 display(tabela_vendas)
 
-"""Passo 2: Calcular o faturamento da loja"""
-
+# Passo 2: Calcular o faturamento da loja
 tabela_faturamento = tabela_vendas[["ID Loja", "Valor Final"]].groupby("ID Loja").sum()
 tabela_faturamento = tabela_faturamento.sort_values(by="Valor Final", ascending=False)
 display(tabela_faturamento)
 
-"""Passo 3: Quantidade de produtos vendidos em cada loja"""
-
+# Passo 3: Quantidade de produtos vendidos em cada loja
 tabela_quantidade = tabela_vendas[["ID Loja", "Quantidade"]].groupby("ID Loja").sum()
 display(tabela_quantidade)
 
-"""Passo 4: Calcular o ticket médio"""
-
+# Passo 4: Calcular o ticket médio
 ticket_medio = (tabela_faturamento["Valor Final"] / tabela_quantidade["Quantidade"]).to_frame()
 ticket_medio = ticket_medio.rename(columns={0: "Ticket Médio"})
 display(ticket_medio)
 
-"""Função enviar e-mail:"""
-
+# Função enviar e-mail:
 def enviar_email(nome_da_loja, tabela):
     import smtplib
     import email.message
@@ -76,13 +40,13 @@ def enviar_email(nome_da_loja, tabela):
     <p>Prezados,</p>
     <p>Segue o relatório de vendas</p>
     {tabela.to_html()}
-    <p>Qualquer dúvida estou à disposição, atenciosamente Celenny Cristhyne </p>
+    <p>Qualquer dúvida estou à disposição </p>
     """
     msg = email.message.Message()
     msg['Subject'] = f"Relatório de Vendas - {nome_da_loja}" 
-    msg['From'] = 'lassyburiti@gmail.com'
-    msg['To'] = 'a.joaquimsfilho@gmail.com'
-    password = "zara1981" 
+    msg['From'] = 'remetente@gmail.com'
+    msg['To'] = 'destinatario@gmail.com'
+    password = "senha" 
     msg.add_header('Content-Type', 'text/html')
     msg.set_payload(corpo_email )
       
@@ -93,13 +57,11 @@ def enviar_email(nome_da_loja, tabela):
     s.sendmail(msg['From'], [msg['To']], msg.as_string().encode('utf-8'))
     print('Email enviado')
 
-"""Passo 5: Enviar o e-mail"""
-
+# Passo 5: Enviar o e-mail
 tabela_completa = tabela_faturamento.join(tabela_quantidade).join(ticket_medio)
 enviar_email("Diretoria", tabela_completa)
 
-"""Passo 6: Enviar e-mail para cada loja"""
-
+# Passo 6: Enviar e-mail para cada loja
 lista_lojas = tabela_vendas["ID Loja"].unique()
 
 for loja in lista_lojas:
