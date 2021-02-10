@@ -24,3 +24,6 @@ Para resolver o desafio vamos seguir a seguinte lógica:
 - Passo 4 - Calcular os indicadores de cada loja
 - Passo 5 - Enviar e-mail para cada loja
 - Passo 6 - Enviar e-mail para a diretoria
+
+
+#### | desafio proposto pela [hashtag treinamentos](https://www.hashtagtreinamentos.com/) durante o Intensivão de Python| 
