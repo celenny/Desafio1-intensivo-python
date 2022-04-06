@@ -26,4 +26,4 @@ Para resolver o desafio vamos seguir a seguinte lógica:
 - Passo 6 - Enviar e-mail para a diretoria
 
 
-#### | desafio proposto pela [hashtag treinamentos](https://www.hashtagtreinamentos.com/) durante o Intensivão de Python | 
+#### | desafio proposto pela hashtag treinamentos durante o Intensivão de Python | 
